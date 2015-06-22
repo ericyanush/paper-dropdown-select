@@ -12,13 +12,34 @@
 <dom-module id="paper-dropdown-select">
 
   <style>
-    :host ::content #dropdown {
+    :host {
+      display: block;
+      position: relative;
+    }
+
+    #dropdown-placeholder {
+      width: var(--paper-dropdown-placeholder-width, 175px);
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      padding-right: 34px;
+    }
+
+    #placeholder-label {
+      width: var(--paper-dropdown-placeholder-width, 175px);
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      padding-right: 34px;
+      overflow: hidden;
+    }
+
+    #dropdown {
       max-height: var(--paper-dropdown-height, 200px);
       overflow-y: scroll;
       position: absolute;
       background-color: var(--paper-dropdown-color, white);
       z-index: 1;
       display: none;
+      width: var(--paper-dropdown-width, 210px);
 
       @apply(--shadow-elevation-2dp);
     }
@@ -26,6 +47,11 @@
     #dropdown-icon {
       position: absolute;
       right: 0;
+      top: 0;
+    }
+
+    #dropdown paper-item {
+      border-bottom: 1px solid rgba(0,0,0,0.5);
     }
 
     .iron-selected {
@@ -39,17 +65,17 @@
 
   <template>
     <paper-input-container on-click="_dropdownAction" disabled$="[[disabled]]">
-      <label>[[label]]</label>
-      <input is="iron-input" type="text" bind-value="{{selectedOption.label}}" disabled />
+      <label id="placeholder-label">[[label]]</label>
+      <input id="dropdown-placeholder" is="iron-input" type="text" bind-value="{{selectedOption.label}}" disabled />
       <iron-icon id="dropdown-icon" icon="[[_dropdownIcon()]]"></iron-icon>
     </paper-input-container>
-    <iron-selector id="dropdown" attrForSelected="value">
+      <iron-selector id="dropdown" attrForSelected="value">
       <template is="dom-repeat" items="{{options}}">
         <paper-item on-click="_hideDropdown" value="{{item.value}}">
           <span>{{item.label}}</span>
         </paper-item>
       </template>
-    </iron-selector>
+      </iron-selector>
     <input type="hidden" name="[[name]]" value="[[selectedOption.value]]" />
 
   </template>
