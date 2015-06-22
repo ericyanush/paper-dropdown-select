@@ -128,12 +128,25 @@
             }]
           }
         }
+      },
+
+      _boundOnCaptureClick: {
+        type: Function,
+        value: function() {
+          return this._onCaptureClick.bind(this);
+        }
+      },
+      _boundOnCaptureKeydown: {
+        type: Function,
+        value: function() {
+          return this._onCaptureKeydown.bind(this);
+        }
       }
     },
 
     listeners: {
-      'tap': '_updateSelected',
-      'neon-animation-finish': '_displayNone'
+      'tap': '_onClick',
+      'neon-animation-finish': '_displayNone',
     },
 
     _displayNone: function() {
@@ -159,19 +172,62 @@
         this.$$('#dropdown').style.display = 'block';
         this.playAnimation('open');
       }
+      this._toggleListeners();
     },
 
     _hideDropdown : function() {
       this.open = false;
       this.playAnimation('close');
+      this._toggleListeners();
     },
 
-    _updateSelected: function() {
+    _onClick: function() {
+      if (this._cancelJob) {
+        this.cancelAsync(this._cancelJob);
+        this._cancelJob = null;
+      }
       var dd = this.$$('#dropdown');
       if (dd.selected !== undefined) {
         this.selectedOption = this.options[dd.selected];
       }
-    }
+    },
+    _toggleListener: function(enable, node, event, boundListener, capture) {
+      if (enable) {
+        node.addEventListener(event, boundListener, capture);
+      } else {
+        node.removeEventListener(event, boundListener, capture);
+      }
+    },
+    _toggleListeners: function() {
+      if (this._toggleListenersAsync) {
+        this.cancelAsync(this._toggleListenersAsync);
+      }
+      // async so we don't auto-close immediately via a click.
+      this._toggleListenersAsync = this.async(function() {
+        this._toggleListener(this.open, document, 'click', this._boundOnCaptureClick, true);
+        this._toggleListener(this.open, document, 'keydown', this._boundOnCaptureKeydown, true);
+        this._toggleListenersAsync = null;
+      });
+    },
+
+    _onCaptureClick: function(event) {
+      // attempt to close asynchronously and prevent the close of a tap event is immediately heard
+      // on target. This is because in shadow dom due to event retargetting event.target is not
+      // useful.
+      if (this.open) {
+        this._cancelJob = this.async(function() {
+          this._hideDropdown();
+        }, 10);
+      }
+    },
+
+     _onCaptureKeydown: function(event) {
+      var ESC = 27;
+      if (!this.noCancelOnEscKey && (event.keyCode === ESC)) {
+        this._hideDropdown();
+        event.stopPropagation();
+      }
+    },
 
   });
 
