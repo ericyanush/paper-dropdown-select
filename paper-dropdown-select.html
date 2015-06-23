@@ -182,10 +182,7 @@
     },
 
     _onClick: function() {
-      if (this._cancelJob) {
-        this.cancelAsync(this._cancelJob);
-        this._cancelJob = null;
-      }
+      
       var dd = this.$$('#dropdown');
       if (dd.selected !== undefined) {
         this.selectedOption = this.options[dd.selected];
