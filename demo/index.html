@@ -35,22 +35,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <body>
   <div class="horizontal center-justified layout">
     <form is="iron-form">
-      <paper-dropdown-select id="my-element" label="Dropdown" name="select"></paper-dropdown-select>
+      <paper-dropdown-select id="my-element" label="Dropdown" name="select">
+        <paper-item value="1">
+          <span>One</span>
+        </paper-item>
+        <paper-item value="#55F">
+          <span>Blue</span>
+        </paper-item>
+        <paper-item value="would smell as sweet">
+          <span>A Rose by another name</span>
+        </paper-item>
+      </paper-dropdown-select>
       <paper-input label="Hello!"></paper-input>
     </form>
   </div>
-
-  <script>
-  (function() {
-    document.addEventListener('WebComponentsReady', function() {
-      var dropdown = document.querySelector('#my-element');
-      dropdown.options = [
-        {label: 'One', value: 1},
-        {label: 'Blue', value: '#55F'},
-        {label: 'A Rose by an other name', value: 'would smell as sweet'}
-      ];
-    });
-  })();
-  </script>
 </body>
 </html>

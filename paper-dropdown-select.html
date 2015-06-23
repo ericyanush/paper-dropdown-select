@@ -70,11 +70,7 @@
       <iron-icon id="dropdown-icon" icon="[[_dropdownIcon()]]"></iron-icon>
     </paper-input-container>
       <iron-selector id="dropdown" attrForSelected="value">
-      <template is="dom-repeat" items="{{options}}">
-        <paper-item value="{{item.value}}">
-          <span>{{item.label}}</span>
-        </paper-item>
-      </template>
+        <content></content>
       </iron-selector>
     <input type="hidden" name="[[name]]" value="[[selectedOption.value]]" />
 
