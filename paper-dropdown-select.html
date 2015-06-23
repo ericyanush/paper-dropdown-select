@@ -66,7 +66,7 @@
   <template>
     <paper-input-container on-click="_dropdownAction" disabled$="[[disabled]]">
       <label id="placeholder-label">[[label]]</label>
-      <input id="dropdown-placeholder" is="iron-input" type="text" bind-value="{{selectedOption.label}}" disabled />
+      <input id="dropdown-placeholder" is="iron-input" type="text" bind-value="{{_selectedLabel(selectedOption)}}" disabled />
       <iron-icon id="dropdown-icon" icon="[[_dropdownIcon()]]"></iron-icon>
     </paper-input-container>
       <iron-selector id="dropdown" attrForSelected="value">
@@ -178,8 +178,16 @@
       
       var dd = this.$$('#dropdown');
       if (dd.selected !== undefined) {
-        this.selectedOption = this.options[dd.selected];
+        this.selectedOption = dd.selectedItem;
       }
+    },
+    _selectedLabel: function() {
+      if (this.selectedOption) {
+        if (label = this.selectedOption.querySelector("span")) {
+          return label.textContent;
+        }
+      }
+      return ""
     },
     _toggleListener: function(enable, node, event, boundListener, capture) {
       if (enable) {
