@@ -72,8 +72,6 @@
       <iron-selector id="dropdown" attrForSelected="value">
         <content></content>
       </iron-selector>
-    <input type="hidden" name="[[name]]" value="[[selectedOption.value]]" />
-
   </template>
 
 </dom-module>
@@ -98,8 +96,7 @@
         reflectToAttribute: true
       },
 
-      options: Object,
-      name: String,
+      label: String,
       selectedOption: Object,
 
       _open: {
