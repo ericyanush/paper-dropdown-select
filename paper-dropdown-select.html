@@ -71,7 +71,7 @@
     </paper-input-container>
       <iron-selector id="dropdown" attrForSelected="value">
       <template is="dom-repeat" items="{{options}}">
-        <paper-item on-click="_hideDropdown" value="{{item.value}}">
+        <paper-item value="{{item.value}}">
           <span>{{item.label}}</span>
         </paper-item>
       </template>
